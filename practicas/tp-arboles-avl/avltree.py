@@ -18,6 +18,7 @@ def _print_tree(node, level):
     print('  ' * level + str(node.key))
     _print_tree(node.leftnode, level + 1)
 
+print('Hello world')
 
 def rotateRight(tree,node):
     if node.parent is not None:
