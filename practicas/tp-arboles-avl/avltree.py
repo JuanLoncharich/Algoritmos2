@@ -101,11 +101,24 @@ def altura(node):
     izquierda = altura(node.leftnode)
     derecha = altura(node.rightnode)
 
-    if izquierda > derecha:
+    if izquierda >= derecha:
         return izquierda + 1
     else:
         return derecha + 1
     
+def calculateBalanceBranch(nodeIn,keyNodeFin):
+  if nodeIn is None:
+    return None
+  
+  while nodeIn.key != keyNodeFin:
+    nodeIn.bf = altura(nodeIn.leftnode) - altura(nodeIn.rightnode)
+    if nodeIn.key > keyNodeFin:
+      nodeIn = nodeIn.leftnode
+    elif nodeIn.key < keyNodeFin:
+      nodeIn = nodeIn.rightnode
+  return
+    
+  
     
 def insert(b, element, key):
   if b.root is None:
@@ -115,7 +128,10 @@ def insert(b, element, key):
     b.root = node
     return
   else:
-    return insertR(b.root, element, key)
+    insertR(b.root, element, key)
+    calculateBalanceBranch(b.root,key)
+    reBalance(b)
+    return
 
 def insertR(node, element, key):
   if node is not None:
@@ -142,6 +158,8 @@ def insertR(node, element, key):
         node.rightnode = newNode
       else:
         insertR(node.rightnode,element,key)
+        
+  
     
 
     
@@ -152,12 +170,16 @@ insert(tree,' ', 7)
 insert(tree,' ', 10)
 insert(tree,' ', 8)
 insert(tree,' ', 20)
+insert(tree,' ', 24)
+insert(tree,' ', 26)
+insert(tree,' ', 28)
+insert(tree,' ', 30)
 
 print_tree(tree)
 print('___________')
-calculateBalance(tree)
+#calculateBalance(tree)
 
-reBalance(tree)
+#reBalance(tree)
 
 print_tree(tree)
 
