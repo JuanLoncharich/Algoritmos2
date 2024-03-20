@@ -105,32 +105,21 @@ def altura(node):
         return izquierda + 1
     else:
         return derecha + 1
-    
-def calculateBalanceBranch(nodeIn,keyNodeFin):
-  if nodeIn is None:
-    return None
-  
-  while nodeIn.key != keyNodeFin:
-    nodeIn.bf = altura(nodeIn.leftnode) - altura(nodeIn.rightnode)
-    if nodeIn.key > keyNodeFin:
-      nodeIn = nodeIn.leftnode
-    elif nodeIn.key < keyNodeFin:
-      nodeIn = nodeIn.rightnode
-  return
-    
-  
-    
+
+
 def insert(b, element, key):
   if b.root is None:
     node = AVLNode()
+    node.bf = 0
     node.key = key
     node.value = element
     b.root = node
     return
   else:
-    insertR(b.root, element, key)
-    calculateBalanceBranch(b.root,key)
-    reBalance(b)
+    node = insertR(b.root, element, key)
+    while node is not None:
+      calculateBalanceNode(node)
+      node = node.parent
     return
 
 def insertR(node, element, key):
@@ -143,32 +132,49 @@ def insertR(node, element, key):
       if node.leftnode is None:
         newNode = AVLNode()
         newNode.key = key
+        newNode.bf = 0
         newNode.value = element
         newNode.parent = node
         node.leftnode = newNode
+        return newNode
       else:
-        insertR(node.leftnode,element,key)
+        return insertR(node.leftnode,element,key)
 
     elif node.key < key:
       if node.rightnode is None:
         newNode = AVLNode()
         newNode.key = key
+        newNode.bf = 0
         newNode.value = element
         newNode.parent = node
         node.rightnode = newNode
+        return newNode
       else:
-        insertR(node.rightnode,element,key)
+        return insertR(node.rightnode,element,key)
         
-  
-    
+##Complemento de la funcion insert()
 
+def calculateBalanceNode(node):
+  if node is None:
+    return None
+  
+  node.bf = altura(node.leftnode) - altura(node.rightnode)
+
+  if node.bf < -1:
+    if node.rightnode.bf > 0:
+      rotateRight(tree,node.rightnode)
+    rotateLeft(tree,node)
+    
+  elif node.bf > 1:
+    if node.leftnode.bf < 0:
+      rotateLeft(tree,node.leftnode)
+    rotateRight(tree,node)
+  
+  return
     
 tree = AVLTree
-insert(tree,' ', 3)
-insert(tree,' ', 5)
-insert(tree,' ', 7)
+
 insert(tree,' ', 10)
-insert(tree,' ', 8)
 insert(tree,' ', 20)
 insert(tree,' ', 24)
 insert(tree,' ', 26)
@@ -176,12 +182,14 @@ insert(tree,' ', 28)
 insert(tree,' ', 30)
 
 print_tree(tree)
-print('___________')
+
+
+#print('___________')
 #calculateBalance(tree)
 
 #reBalance(tree)
 
-print_tree(tree)
+#print_tree(tree)
 
 #print('__________________')
 
