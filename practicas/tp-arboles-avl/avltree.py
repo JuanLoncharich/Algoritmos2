@@ -106,14 +106,11 @@ def altura(node):
     else:
       izquierda = altura(node.leftnode)
       derecha = altura(node.rightnode)
-      
-      if node.leftnode is None and node.rightnode is None:
-        return 1
 
       return max(izquierda,derecha) + 1
   
   
-##Insertar nodos dentro de un AVL manteniendo su condicion de AVL
+##Insertar nodos dentro de un AVL manteniendo su condicion de AVL en O(log(n)) (No funciona siempre)
 
 def insert(b, element, key):
   if b.root is None:
@@ -163,7 +160,7 @@ def insertR(node, element, key):
       else:
         return insertR(node.rightnode,element,key)
       
-##Complemento de la funcion insert()
+##Complemento de la funcion insert, que calcula el balance factor del nodo enviado y realiza rotaciones correspondientes para balancear el arbol
 
 def calculateBalanceBranch(node):
   if node is None:
@@ -183,14 +180,57 @@ def calculateBalanceBranch(node):
     
   return
 
+##Eliminar nodos dentro de un AVL por su key manteniendo su condicion de AVL en O(n)
+
+def deleteKey(b,key):
+  deleteKeyR(b.root,key)
+  calculateBalance(b)
+  reBalance(b)
+  return 
+
+def deleteKeyR(node,key):
+  if node is None:
+    return node
+
+  if key < node.key:
+    node.leftnode = deleteKeyR(node.leftnode, key)
+  elif key > node.key:
+    node.rightnode = deleteKeyR(node.rightnode, key)
+  else:
+    if node.leftnode is None:
+      a = node.rightnode
+      node = None
+      return a
+    
+    elif node.rightnode is None:
+      a = node.leftnode
+      node = None
+      return a
+
+    a = menor_mayores(node.rightnode)
+
+    node.key = a.key
+
+    node.rightnode = deleteKeyR(node.rightnode,a.key)
+
+  return node
+    
+def menor_mayores(node):
+  currentNode = node
+  while currentNode.leftnode is not None:
+      currentNode = currentNode.leftnode
+  return currentNode
+
 tree = AVLTree
 
+insert(tree,' ', 28)
+insert(tree,' ', 24)
 insert(tree,' ', 10)
 insert(tree,' ', 20)
-insert(tree,' ', 24)
 insert(tree,' ', 26)
-insert(tree,' ', 28)
 insert(tree,' ', 30)
+
+print(deleteKey(tree,28))
 
 print_tree(tree)
 
