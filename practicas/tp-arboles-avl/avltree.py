@@ -91,8 +91,7 @@ def reBalanceS(node,tree):
     if node.leftnode.bf < 0:
       rotateLeft(tree,node.leftnode)
     rotateRight(tree,node)
-            
-      
+         
 
 def altura(node):
     if node is None:
@@ -106,7 +105,6 @@ def altura(node):
     else:
         return derecha + 1
 
-
 def insert(b, element, key):
   if b.root is None:
     node = AVLNode()
@@ -118,7 +116,7 @@ def insert(b, element, key):
   else:
     node = insertR(b.root, element, key)
     while node is not None:
-      calculateBalanceNode(node)
+      calculateBalanceBranch(node)
       node = node.parent
     return
 
@@ -151,10 +149,12 @@ def insertR(node, element, key):
         return newNode
       else:
         return insertR(node.rightnode,element,key)
-        
+      
+      
+      
 ##Complemento de la funcion insert()
 
-def calculateBalanceNode(node):
+def calculateBalanceBranch(node):
   if node is None:
     return None
   
@@ -169,9 +169,9 @@ def calculateBalanceNode(node):
     if node.leftnode.bf < 0:
       rotateLeft(tree,node.leftnode)
     rotateRight(tree,node)
-  
-  return
     
+  return
+
 tree = AVLTree
 
 insert(tree,' ', 10)
@@ -179,7 +179,7 @@ insert(tree,' ', 20)
 insert(tree,' ', 24)
 insert(tree,' ', 26)
 insert(tree,' ', 28)
-insert(tree,' ', 30)
+#insert(tree,' ', 30)
 
 print_tree(tree)
 
