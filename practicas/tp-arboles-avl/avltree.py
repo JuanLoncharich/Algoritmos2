@@ -20,43 +20,49 @@ def _print_tree(node, level):
 
 ##Realiza una rotación a la derecha de un árbol binario
 
-def rotateRight(tree,node):
-  if node.parent is not None:
-      node.leftnode.parent = node.parent
-      node.parent.leftnode = node.leftnode
-      node.parent = node.leftnode
-  else:
-      tree.root = node.leftnode
-  if node.leftnode.rightnode is None:
-      node.leftnode.rightnode = node
-      node.leftnode = None
-  else:
-      nodeAux = node.leftnode.rightnode
-      node.leftnode.rightnode = node
-      node.leftnode.parent = None
-      node.leftnode = nodeAux
-      nodeAux.parent = node
-  return node.parent
+def rotateRight(tree, node):
+    new_root = node.leftnode
+    node.leftnode = new_root.rightnode
+    
+    if new_root.rightnode is not None:
+        new_root.rightnode.parent = node
+    
+    new_root.parent = node.parent
+    
+    if node.parent is None:
+        tree.root = new_root
+    elif node == node.parent.rightnode:
+        node.parent.rightnode = new_root
+    else:
+        node.parent.leftnode = new_root
+        
+    new_root.rightnode = node
+    node.parent = new_root
+    
+    return new_root
             
 ##Realiza una rotación a la izquierda de un árbol binario
             
-def rotateLeft(tree,node):
-  if node.parent is not None:
-      node.rightnode.parent = node.parent
-      node.parent.rightnode = node.rightnode
-      node.parent = node.rightnode
-  else:
-      tree.root = node.rightnode
-  if node.rightnode.leftnode is None:
-      node.rightnode.leftnode = node
-      node.rightnode = None
-  else:
-      nodeAux = node.rightnode.leftnode
-      node.rightnode.leftnode = node
-      node.rightnode.parent = None
-      node.rightnode = nodeAux
-      nodeAux.parent = node
-  return node.parent
+def rotateLeft(tree, node):
+    new_root = node.rightnode
+    node.rightnode = new_root.leftnode
+    
+    if new_root.leftnode is not None:
+        new_root.leftnode.parent = node
+    
+    new_root.parent = node.parent
+    
+    if node.parent is None:
+        tree.root = new_root
+    elif node == node.parent.leftnode:
+        node.parent.leftnode = new_root
+    else:
+        node.parent.rightnode = new_root
+        
+    new_root.leftnode = node
+    node.parent = new_root
+    
+    return new_root
 
 ##Calcula el balance factor de todos los nodos del árbol
 
@@ -108,9 +114,21 @@ def altura(node):
       derecha = altura(node.rightnode)
 
       return max(izquierda,derecha) + 1
+    
+##No funciona todavia
+
+def alturaLogN(node):
+    if node is None:
+      return 0
+    else:
+      if node.bf > 0:
+        izquierda = altura(node.leftnode)
+      else:
+        derecha = altura(node.rightnode)
+        
+      return max(izquierda,derecha) + 1
   
-  
-##Insertar nodos dentro de un AVL manteniendo su condicion de AVL en O(log(n)) (No funciona siempre)
+##Insertar nodos dentro de un AVL manteniendo su condicion de AVL en O(log(n))
 
 def insert(b, element, key):
   if b.root is None:
@@ -128,6 +146,7 @@ def insert(b, element, key):
     while node is not None:
       calculateBalanceBranch(node)
       node = node.parent
+      
     return
 
 def insertR(node, element, key):
@@ -184,8 +203,9 @@ def calculateBalanceBranch(node):
 
 def deleteKey(b,key):
   deleteKeyR(b.root,key)
-  calculateBalance(b)
-  reBalance(b)
+  while node is not None:
+    calculateBalanceBranch(node)
+    node = node.parent
   return 
 
 def deleteKeyR(node,key):
@@ -208,9 +228,7 @@ def deleteKeyR(node,key):
       return a
 
     a = menor_mayores(node.rightnode)
-
     node.key = a.key
-
     node.rightnode = deleteKeyR(node.rightnode,a.key)
 
   return node
@@ -223,14 +241,14 @@ def menor_mayores(node):
 
 tree = AVLTree
 
-insert(tree,' ', 28)
-insert(tree,' ', 24)
 insert(tree,' ', 10)
 insert(tree,' ', 20)
+insert(tree,' ', 24)
 insert(tree,' ', 26)
+insert(tree,' ', 28)
 insert(tree,' ', 30)
 
-print(deleteKey(tree,28))
-
+#deleteKey(tree,20)
+#deleteKey(tree,10)
 print_tree(tree)
 
