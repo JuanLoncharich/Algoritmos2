@@ -8,6 +8,7 @@ class AVLNode:
     key = None
     value = None
     bf = None
+    #height = None
 
 def print_tree(B):
   _print_tree(B.root, 0)
@@ -107,26 +108,20 @@ def reBalanceS(node,tree):
 ##Calcular la altura de un arbol
 
 def altura(node):
-    if node is None:
-      return 0
-    else:
-      izquierda = altura(node.leftnode)
-      derecha = altura(node.rightnode)
+  if node is None:
+    return 0
+  else:
+    izquierda = altura(node.leftnode)
+    derecha = altura(node.rightnode)
 
-      return max(izquierda,derecha) + 1
+    return max(izquierda,derecha) + 1
     
 ##No funciona todavia
 
-def alturaLogN(node):
-    if node is None:
-      return 0
-    else:
-      if node.bf > 0:
-        izquierda = altura(node.leftnode)
-      else:
-        derecha = altura(node.rightnode)
-        
-      return max(izquierda,derecha) + 1
+def height(node):
+  if node is None:
+    return 0
+  return 1 + max(height(node.leftnode), height(node.rightnode))
   
 ##Insertar nodos dentro de un AVL manteniendo su condicion de AVL en O(log(n))
 
@@ -137,6 +132,8 @@ def insert(b, element, key):
     node.bf = 0
     node.key = key
     node.value = element
+    #node.height = 1 + max(getHeight(node.leftnode), getHeight(root.right))
+
     b.root = node
     return
   
@@ -248,8 +245,6 @@ insert(tree,' ', 26)
 insert(tree,' ', 28)
 insert(tree,' ', 30)
 
-deleteKey(tree,20)
-deleteKey(tree,10)
-deleteKey(tree,24)
+print(height(tree.root))
 print_tree(tree)
 
