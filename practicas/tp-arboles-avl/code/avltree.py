@@ -73,7 +73,7 @@ def calculateBalance(tree):
 def calculateBalanceR(node):
     if node is None:
         return
-    node.bf = altura(node.leftnode) - altura(node.rightnode)
+    node.bf = height(node.leftnode) - height(node.rightnode)
     calculateBalanceR(node.leftnode)
     calculateBalanceR(node.rightnode)
 
@@ -105,18 +105,7 @@ def reBalanceS(node,tree):
       rotateLeft(tree,node.leftnode)
     rotateRight(tree,node)
          
-##Calcular la altura de un arbol
-
-def altura(node):
-  if node is None:
-    return 0
-  else:
-    izquierda = altura(node.leftnode)
-    derecha = altura(node.rightnode)
-
-    return max(izquierda,derecha) + 1
-    
-##No funciona todavia
+##Calcular la altura de un arbol en O(log(n))
 
 def height(node):
   if node is None:
@@ -182,7 +171,7 @@ def calculateBalanceBranch(node):
   if node is None:
     return None
   
-  node.bf = altura(node.leftnode) - altura(node.rightnode)
+  node.bf = height(node.leftnode) - height(node.rightnode)
 
   if node.bf < -1:
     if node.rightnode.bf > 0:
