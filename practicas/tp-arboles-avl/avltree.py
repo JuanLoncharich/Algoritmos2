@@ -202,11 +202,11 @@ def calculateBalanceBranch(node):
 ##Eliminar nodos dentro de un AVL por su key manteniendo su condicion de AVL en O(n)
 
 def deleteKey(b,key):
-  deleteKeyR(b.root,key)
+  node = deleteKeyR(b.root,key)
   while node is not None:
     calculateBalanceBranch(node)
     node = node.parent
-  return 
+  return
 
 def deleteKeyR(node,key):
   if node is None:
@@ -248,7 +248,8 @@ insert(tree,' ', 26)
 insert(tree,' ', 28)
 insert(tree,' ', 30)
 
-#deleteKey(tree,20)
-#deleteKey(tree,10)
+deleteKey(tree,20)
+deleteKey(tree,10)
+deleteKey(tree,24)
 print_tree(tree)
 
