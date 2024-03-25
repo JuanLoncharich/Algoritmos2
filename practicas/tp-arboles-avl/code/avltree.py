@@ -8,7 +8,6 @@ class AVLNode:
     key = None
     value = None
     bf = None
-    #height = None
 
 def print_tree(B):
   _print_tree(B.root, 0)
@@ -121,7 +120,6 @@ def insert(b, element, key):
     node.bf = 0
     node.key = key
     node.value = element
-    #node.height = 1 + max(getHeight(node.leftnode), getHeight(root.right))
 
     b.root = node
     return
