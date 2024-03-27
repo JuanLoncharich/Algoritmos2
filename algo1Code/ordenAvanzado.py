@@ -68,12 +68,10 @@ def mergeSort(l):
         mylinkedlist.add(list2,currentNode.value)
         currentNode = currentNode.nextNode
     
+    mergeSort(list1)
+    mergeSort(list2)
     
-    orden1 = mergeSort(list1)
-    orden2 = mergeSort(list2)
-    
-    
-    l.head = None    
+    l.head = None
     currentNode1 = list1.head
     currentNode2 = list2.head
     

@@ -180,7 +180,8 @@ def calculateBalanceBranch(node):
     if node.leftnode.bf < 0:
       rotateLeft(tree,node.leftnode)
     rotateRight(tree,node)
-    
+
+  node.bf = height(node.leftnode) - height(node.rightnode)    
   return
 
 ##Eliminar nodos dentro de un AVL por su key manteniendo su condicion de AVL en O(n)
@@ -232,6 +233,10 @@ insert(tree,' ', 26)
 insert(tree,' ', 28)
 insert(tree,' ', 30)
 
-print(height(tree.root))
+#print(height(tree.root))
+deleteKey(tree,20)
+deleteKey(tree,24)
+deleteKey(tree,10)
+
 print_tree(tree)
 
