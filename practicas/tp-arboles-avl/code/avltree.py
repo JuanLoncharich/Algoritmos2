@@ -15,7 +15,7 @@ def print_tree(B):
 def _print_tree(node, level):
   if node is not None:
     _print_tree(node.rightnode, level + 1)
-    print('  ' * level + str(node.key))
+    print('  ' * level + str(node.bf))
     _print_tree(node.leftnode, level + 1)
 
 ##Realiza una rotación a la derecha de un árbol binario
@@ -149,7 +149,7 @@ def insertR(node, element, key):
         node.leftnode = newNode
         return newNode
       else:
-        return insertR(node.leftnode,element,key)
+        return insertR(node.leftnode, element, key)
 
     elif node.key < key:
       if node.rightnode is None:
@@ -161,7 +161,7 @@ def insertR(node, element, key):
         node.rightnode = newNode
         return newNode
       else:
-        return insertR(node.rightnode,element,key)
+        return insertR(node.rightnode, element, key)
       
 ##Complemento de la funcion insert, que calcula el balance factor del nodo enviado y realiza rotaciones correspondientes para balancear el arbol
 
@@ -233,7 +233,6 @@ insert(tree,' ', 26)
 insert(tree,' ', 28)
 insert(tree,' ', 30)
 
-#print(height(tree.root))
 deleteKey(tree,20)
 deleteKey(tree,24)
 deleteKey(tree,10)
