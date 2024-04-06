@@ -196,7 +196,7 @@ def deleteKey(b,key):
 def deleteKeyR(node,key):
   if node is None:
     return node
-
+  
   if key < node.key:
     node.leftnode = deleteKeyR(node.leftnode, key)
   elif key > node.key:
