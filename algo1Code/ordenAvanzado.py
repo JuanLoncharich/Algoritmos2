@@ -1,8 +1,6 @@
 import mylinkedlist
 import myqueue
-import binarytree
 import math
-import mystack
 
 def searchNode(l,element):
     
