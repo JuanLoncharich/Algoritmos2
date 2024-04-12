@@ -1,14 +1,22 @@
 #Ejercicio 4
 
 def ordenMedio(array):
-    return ordenMedioR(array,0)
+    if len(array) < 2:
+        return array
+    array.sort()
+    return ordenMedioR(array)
 
-def ordenMedioR(array,pickPivote):
+def ordenMedioR(array):
     finalArray = []
     listMenor = []
     listMayor = []
 
-    pivote = array[pickPivote]
+    long = int(len(array)/2)
+    if long % 2 != 0:
+        long += 1
+    
+    pivote = array[long]
+    
     for i in range(0,len(array)):
         if array[i] < pivote:
             listMenor.append(array[i])
@@ -29,5 +37,5 @@ def ordenMedioR(array,pickPivote):
 
 array = [1,2,3,4,5,6,7,8,9,10]
     
-print(ordenMedio(array))
+#print(ordenMedio(array))
     
