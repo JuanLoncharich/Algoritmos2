@@ -15,7 +15,7 @@ def print_tree(B):
 def _print_tree(node, level):
   if node is not None:
     _print_tree(node.rightnode, level + 1)
-    print('  ' * level + str(node.bf))
+    print('  ' * level + str(node.key))
     _print_tree(node.leftnode, level + 1)
 
 ##Realiza una rotación a la derecha de un árbol binario
@@ -196,7 +196,7 @@ def deleteKey(b,key):
 def deleteKeyR(node,key):
   if node is None:
     return node
-  
+
   if key < node.key:
     node.leftnode = deleteKeyR(node.leftnode, key)
   elif key > node.key:
