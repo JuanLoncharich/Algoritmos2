@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./practicas/tp-hash/code"
+    ]
+}

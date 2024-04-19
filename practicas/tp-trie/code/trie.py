@@ -1,3 +1,4 @@
+import dictionary as dict
 class Trie:
     root = None
 
@@ -16,7 +17,9 @@ def print_trie(node, level=0):
     for child in node.children:
         print_trie(child, level + 1)
 
-def insert(t, word):
+##Insert a word in the trie(created using python lists)
+
+def insert(t,word):
     if t.root is None:
         t.root = TrieNode()
         t.root.children = []
@@ -28,7 +31,7 @@ def insert(t, word):
                 current = child
                 found = True
                 break
-        if not found:
+        if found is False:
             new_node = TrieNode()
             new_node.key = word[i]
             new_node.children = []
@@ -37,6 +40,39 @@ def insert(t, word):
             current = new_node
             if i == len(word) - 1:
                 current.isEndOfWord = True
+
+##Insert a word in the trie(created using hash tables)
+
+# m is the number of elements we want for each hash table
+def insertHash(t,word,m):
+    if t.root is None:
+        t.root = TrieNode()
+        t.root.children = [None] * m
+    current = t.root
+    
+    for char in word:
+        found = False
+        
+        if dict.search(current.children,char) is not None:
+            found = True
+            current = current.children[dict.hashFunction(char,m)]
+            for i in range(0,len(current)):
+                if current[i][0] == char:
+                    current = current[i][1]
+                    break
+                    
+        if found is False:
+            new_node = TrieNode()
+            new_node.key = char
+            new_node.children = [None] * m
+            new_node.parent = current
+            current.children = dict.insert(current.children,char,new_node)
+            current = new_node
+            print('Entró')
+        #print(current.key)
+        #print('')
+    #print('SALTO')
+
 
 def search(t,word):
     if t.root is None:
@@ -49,9 +85,10 @@ def search(t,word):
                 if i == len(word)-1 and current.isEndOfWord is True:
                     return True
                 break
-        
-    
+    return False
 
+
+'''
 t = Trie()
 insert(t, "hola")
 insert(t, "holanda")
@@ -63,3 +100,10 @@ if search(t, "holanda"):
     print("Encontrado")
 else:
     print("No encontrado")
+'''
+t = Trie()
+insertHash(t,"hola",15)
+insertHash(t,"holanda",15)
+
+
+#print_trie(t.root)

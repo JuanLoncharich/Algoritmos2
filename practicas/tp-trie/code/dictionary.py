@@ -47,9 +47,8 @@ def delete(d,key):
     return None
 
 
-    
-'''
 d = [None] * 11
+
 insert(d,'asdfafsdsaa','1')
 insert(d,'holaBuenasTasdaardesComoEstas','2')
 insert(d,321112615461,'3')
@@ -58,12 +57,11 @@ insert(d,'jq weqrfewan','5')
 insert(d,'robe fdsadfrto','6')
 insert(d,'312asd fa214','7')
 insert(d,'1212asdfa21414512','8')
-insert(d,'12312asda sfds d54165','9')
+insert(d,'key1','9')
 insert(d,'12312dfa21434312','10')
 insert(d,'12312af aa sfdf23r23','11')
 insert(d,'12312asdfa22','12')
 #print(d)
-'''
 
 #print(search(d,'12312dfa21434312'))
 #delete(d,321112615461)
