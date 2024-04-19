@@ -17,33 +17,10 @@ def print_trie(node, level=0):
     for child in node.children:
         print_trie(child, level + 1)
 
-##Insert a word in the trie(created using python lists)
-
-def insert(t,word):
-    if t.root is None:
-        t.root = TrieNode()
-        t.root.children = []
-    current = t.root
-    for i in range(len(word)):
-        found = False
-        for child in current.children:
-            if child.key == word[i]:
-                current = child
-                found = True
-                break
-        if found is False:
-            new_node = TrieNode()
-            new_node.key = word[i]
-            new_node.children = []
-            new_node.parent = current
-            current.children.append(new_node)
-            current = new_node
-            if i == len(word) - 1:
-                current.isEndOfWord = True
 
 ##Insert a word in the trie(created using hash tables)
-
 # m is the number of elements we want for each hash table
+
 def insertHash(t,word,m):
     if t.root is None:
         t.root = TrieNode()
@@ -68,11 +45,46 @@ def insertHash(t,word,m):
             new_node.parent = current
             current.children = dict.insert(current.children,char,new_node)
             current = new_node
-            print('Entró')
         #print(current.key)
         #print('')
     #print('SALTO')
+    current.isEndOfWord = True
 
+def searchHash(t,word):
+    current = t.root
+    for char in word:
+        nextNode = dict.search(current.children,char)
+        if nextNode is not None:
+            current = nextNode
+            if current.isEndOfWord is True and char == word[-1]:
+                return True
+        else:
+            break
+    return False
+            
+##Insert a word in the trie(created using python lists)
+
+def insert(t,word):
+    if t.root is None:
+        t.root = TrieNode()
+        t.root.children = []
+    current = t.root
+    for i in range(len(word)):
+        found = False
+        for child in current.children:
+            if child.key == word[i]:
+                current = child
+                found = True
+                break
+        if found is False:
+            new_node = TrieNode()
+            new_node.key = word[i]
+            new_node.children = []
+            new_node.parent = current
+            current.children.append(new_node)
+            current = new_node
+            if i == len(word) - 1:
+                current.isEndOfWord = True
 
 def search(t,word):
     if t.root is None:
@@ -105,5 +117,9 @@ t = Trie()
 insertHash(t,"hola",15)
 insertHash(t,"holanda",15)
 
+if searchHash(t,"ha"):
+    print("Encontrado")
+else:
+    print("No encontrado")
 
 #print_trie(t.root)
