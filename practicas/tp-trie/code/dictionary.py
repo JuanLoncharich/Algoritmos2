@@ -11,9 +11,8 @@ def hashFunction(k,m):
     else:
         for i in range(1,len(k)):
             random.seed(ord(k[i]))
-            for j in range(0,ord(k[i])):
-                hash_value = (hash_value + ord(k[i]) * random.randint(2, 1000)) % m
-        return hash_value
+            hash_value = (hash_value + ord(k[i]) * random.randint(2, 1000))
+        return hash_value % m
 
 
 def insert(d,key,value):

@@ -1,4 +1,5 @@
 import random
+import math
 
 def hashFunction(k,m):
     hash_value = 0
@@ -15,7 +16,6 @@ def hashFunction(k,m):
                 hash_value = (hash_value + ord(k[i]) * random.randint(2, 1000)) % m
         return hash_value
 
-
 def insert(d,key,value):
     index = hashFunction(key,len(d))
     if d[index] is None:
@@ -23,7 +23,6 @@ def insert(d,key,value):
     else:
         d[index].append((key,value))
     return d
-
 
 def search(d,key):
     index = hashFunction(key,len(d))
@@ -33,7 +32,6 @@ def search(d,key):
         for i in range(0,len(d[index])):
             if d[index][i][0] == key:
                 return d[index][i][1]
-
 
 def delete(d,key):
     index = hashFunction(key,len(d))
@@ -46,8 +44,31 @@ def delete(d,key):
                 return d[index]
     return None
 
+##Ejercicio 3
+def hashFunctionMult(k,m):
+    return math.floor(m * ((k *(math.sqrt(5)-1)/2) % 1))
+#print(hashFunctionMult(65,1000))
 
+##Ejercicio 4
+#O(n) where n is the length of the string
+def isPermutation(s1,s2):
+    if len(s1) != len(s2):
+        return False
+    d1 = [None] * len(s1)
+    d2 = [None] * len(s2)
     
+    for char in s1:
+        insert(d1,char,char)
+    for char in s2:
+        insert(d2,char,char)
+        
+    for i in range(0,len(d1)):
+        if d2[hashFunction(s1[i],len(d2))] is None:
+            return False
+    return True
+
+
+
 '''
 d = [None] * 11
 insert(d,'asdfafsdsaa','1')

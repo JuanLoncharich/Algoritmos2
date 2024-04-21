@@ -8,17 +8,17 @@ class TrieNode:
     key = None
     isEndOfWord = False
 
-def print_trie(node, level=0):
+def printTrie(node, level=0):
     if node is None:
         return
     print('    ' * level, end='')
     if node.key is not None:
         print(node.key)
     for child in node.children:
-        print_trie(child, level + 1)
+        printTrie(child, level + 1)
 
 
-##Insert a word in the trie(created using hash tables)
+##Insert a word in the trie(using hash tables)
 # m is the number of elements we want for each hash table
 
 def insertHash(t,word,m):
@@ -45,10 +45,9 @@ def insertHash(t,word,m):
             new_node.parent = current
             current.children = dict.insert(current.children,char,new_node)
             current = new_node
-        #print(current.key)
-        #print('')
-    #print('SALTO')
     current.isEndOfWord = True
+
+##Search a word in the trie(using hash tables)
 
 def searchHash(t,word):
     current = t.root
@@ -61,8 +60,29 @@ def searchHash(t,word):
         else:
             break
     return False
-            
-##Insert a word in the trie(created using python lists)
+
+##Insert a word in the trie(created using python dictionaries)
+
+def insertTrieDict(t,word):
+    if t.root is None:
+        t.root = TrieNode()
+        t.root.children = {}
+    current = t.root
+    for char in word:
+        found = False
+        if char in current.children:
+            found = True
+            current = current.children[char]
+        if found is False:
+            newNode = TrieNode()
+            newNode.key = char
+            newNode.children = {}
+            newNode.parent = current
+            current.children[char] = newNode
+            current = newNode
+    current.isEndOfWord = True
+
+##Insert a word in the trie(using python lists)
 
 def insert(t,word):
     if t.root is None:
@@ -86,6 +106,8 @@ def insert(t,word):
             if i == len(word) - 1:
                 current.isEndOfWord = True
 
+##Search a word in the trie(using python lists)
+
 def search(t,word):
     if t.root is None:
         return False
@@ -99,27 +121,88 @@ def search(t,word):
                 break
     return False
 
+##Delete a word in the trie(using python lists)
 
-'''
+def delete(t,word):
+    if t.root is None:
+        return False
+    deleteR(t.root,word,0)
+    
+def deleteR(node,word,index):
+    if index == len(word):
+        if node.isEndOfWord is False:
+            return False
+        node.isEndOfWord = False
+        return len(node.children) == 0
+    char = word[index]
+    child = None
+    for i in range(0,len(node.children)):
+        if node.children[i].key == char:
+            child = node.children[i]
+            break
+    if child is None:
+        return False
+    deleteNode = deleteR(child,word,index+1)
+    if deleteNode is True:
+        node.children.remove(child)
+        return len(node.children) == 0
+    return False
+
+##Exercise 4
+def prefixLongN(t,prefix,n):
+    if t.root is None:
+        return []
+    lst = []
+    current = searchReturnNode(t,prefix)
+    return prefixLongNR(current,prefix,n,lst)
+
+def prefixLongNR(node,prefix,n,lst):
+    if node is None:
+        return None
+    if len(prefix) > n:
+        return None
+    if node.isEndOfWord is True and len(prefix) == n:
+        print(prefix)
+        return
+    for child in node.children:
+        prefixLongNR(child,prefix+child.key,n,lst)
+        
+def searchReturnNode(t,word):
+    if t.root is None:
+        return False
+    current = t.root
+    for i in range(0,len(word)):
+        for char in current.children:
+            if char.key == word[i]:
+                current = char
+                if i == len(word)-1:
+                    return current
+                break
+    return False
+
+##Exercise 5
+def isEqual(t1,t2):
+    if t1.root is None and t2.root is None:
+        return True
+    if t1.root is None or t2.root is None:
+        return False
+    return isEqualR(t1.root,t2.root)
+
+def isEqualR(node1,node2):
+    if node1.isEndOfWord != node2.isEndOfWord:
+        return False
+    if len(node1.children) != len(node2.children):
+        return False
+    for i in range(0,len(node1.children)):
+        if node1.children[i].key != node2.children[i].key:
+            return False
+        if isEqualR(node1.children[i],node2.children[i]) is False:
+            return False
+    return True
+    
 t = Trie()
-insert(t, "hola")
-insert(t, "holanda")
-insert(t, "estas")
+insert(t,"hola")
+insert(t,"holanda")
+insert(t,"holande")
 
-print_trie(t.root)
 
-if search(t, "holanda"):
-    print("Encontrado")
-else:
-    print("No encontrado")
-'''
-t = Trie()
-insertHash(t,"hola",15)
-insertHash(t,"holanda",15)
-
-if searchHash(t,"ha"):
-    print("Encontrado")
-else:
-    print("No encontrado")
-
-#print_trie(t.root)
