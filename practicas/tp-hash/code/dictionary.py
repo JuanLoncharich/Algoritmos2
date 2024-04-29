@@ -68,7 +68,6 @@ def isPermutation(s1,s2):
     return True
 
 
-
 '''
 d = [None] * 11
 insert(d,'asdfafsdsaa','1')

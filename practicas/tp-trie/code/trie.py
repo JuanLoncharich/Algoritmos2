@@ -203,25 +203,28 @@ def isEqualR(node1,node2):
 ##Exercise 6
 def invertedString(t):
     if t.root is None:
-	return None
+        return None
     word = []
-    invertedStringR(t.root,word)
+    invertedStringR(t.root, word)
 
-def invertedStringR(node,word):
+def invertedStringR(node, word):
     if node.isEndOfWord is True:
-	cadena = ''.join(word)
-	if search(t,cadena) is True:
-	    return True
-	else:
-	    word = []
+        cadena = ''.join(word)
+        if search(t, cadena) is True:
+            return True
+        else:
+            word = []
     else:
-	word.append('node.key')
-	for i in range(0,len(node.children)):
-    	    invertedStringR(node.children[i])
-        
+        word.append('node.key')
+        for i in range(0, len(node.children)):
+            invertedStringR(node.children[i], word)
+
 t = Trie()
 insert(t,"hola")
-insert(t,"holanda")
-insert(t,"holande")
+insert(t,"aloh")
 
+if invertedString(t) is True:
+    print("Si")
+else:
+    print("No")
 
