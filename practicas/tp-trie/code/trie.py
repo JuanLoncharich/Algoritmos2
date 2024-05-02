@@ -203,28 +203,55 @@ def isEqualR(node1,node2):
 ##Exercise 6
 def invertedString(t):
     if t.root is None:
-        return None
-    word = []
-    invertedStringR(t.root, word)
+        return False
+    return invertedStringR(t.root, t)
 
-def invertedStringR(node, word):
-    if node.isEndOfWord is True:
-        cadena = ''.join(word)
-        if search(t, cadena) is True:
+def invertedStringR(node, t):
+    if node.isEndOfWord:
+        cadena = ''.join(node.key)
+        inverted_word = cadena[::-1]
+        if search(t, inverted_word):
             return True
-        else:
-            word = []
+    for child in node.children:
+        if invertedStringR(child, t):
+            return True
+    return False
+
+##Exercise 7
+def autoCompletar(t,string):
+    lst = []
+    searchNode = partialSearch(t,string)
+    if searchNode is False:
+        return []
     else:
-        word.append('node.key')
-        for i in range(0, len(node.children)):
-            invertedStringR(node.children[i], word)
+        for child in searchNode.children:
+            autoCompletarR(child,string,lst)
+        return lst
+    
+def autoCompletarR(node,string,lst):
+    if node.isEndOfWord is True:
+        lst.append(string+node.key)
+    for child in node.children:
+        autoCompletarR(child,string+node.key,lst)
+    
+def partialSearch(t,word):
+    if t.root is None:
+        return False
+    current = t.root
+    for i in range(0,len(word)):
+        for char in current.children:
+            if char.key == word[i]:
+                current = char
+                if i == len(word)-1:
+                    return current
+                break
+    return False
+
 
 t = Trie()
-insert(t,"hola")
-insert(t,"aloh")
-
-if invertedString(t) is True:
-    print("Si")
-else:
-    print("No")
-
+insert(t, "hellos")
+insert(t, "hello")
+insert(t, "hell")
+insert(t, "olleh")
+#print(invertedString(t))
+print(autoCompletar(t, "he"))
