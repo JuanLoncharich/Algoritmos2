@@ -126,25 +126,48 @@ def isIncluded(s,t):
     return True
 
 
-##Ejercicio 10
-def hashFunctionOpenAddressing(d,k,m):
+##Open Addressing functions
+##Open Addressing Linear Probing
+def hashFunctionOpenAddressingLinear(d,k,m):
     hash_value = 0
     k = str(k)
     a = 17921
     for char in k:
         hash_value = (hash_value * a + ord(char)) % m
+    aux = hash_value
     for i in range(0,m):
         if d[hash_value] is not None:
-            if hash_value < m:
+            if hash_value < m-1:
                 hash_value += 1
             else:
                 hash_value = 0
+            if hash_value == aux:
+                #print('No hay espacio en la tabla')
+                return None
         else:
             break
-    return hash_value + i
+    return hash_value
 
+##Open Addressing Double Hashing
+def hashFunctionOpenAddressingDoubleHashing(d,k,m):
+    hash_value = 0
+    k = str(k)
+    a = 17921
+    
+    hash_value1 = (a * ord(k[int(len(k)/2)])) % m
+    hash_value2 = (a * ord(k[int(len(k)/2) - 1])) % m
+    
+    for i in range(0,m):
+        if d[hash_value1] is not None:
+            hash_value1 = (hash_value1 + hash_value2) % m
+        else:
+            break
+    return hash_value1
+
+
+#Podrias cambiar a otro metodo de open addressing cambiando la funcion hash a alguna de las definidas arriba
 def insertOpenAddressing(d,key,value):
-    index = hashFunctionOpenAddressing(d,key,len(d))
+    index = hashFunctionOpenAddressingDoubleHashing(d,key,len(d))
     if d[index] is None:
         d[index] = [(key,value)]
     else:
@@ -154,18 +177,17 @@ def insertOpenAddressing(d,key,value):
     return d
 
 def searchOpenAddressing(d,key):
-    index = hashFunctionOpenAddressing(d,key,len(d))
-    print(index)
-    return d[index]
+    index = hashFunctionOpenAddressingDoubleHashing(d,key,len(d))
+    return d[index][0][1]
 
 
-
-d = [None] * 11
+d = [None] * 4
 insertOpenAddressing(d,'12',1)
 insertOpenAddressing(d,'13',2)
 insertOpenAddressing(d,'14',3)
 insertOpenAddressing(d,'15',4)
-print(searchOpenAddressing(d,'12'))
+
+print(searchOpenAddressing(d,'14'))
 
 
 '''
