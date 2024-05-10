@@ -169,7 +169,7 @@ def hashFunctionOpenAddressingDoubleHashing(d,k,m):
 def insertOpenAddressing(d,key,value):
     index = hashFunctionOpenAddressingDoubleHashing(d,key,len(d))
     if d[index] is None:
-        d[index] = [(key,value)]
+        d[index] = (key,value)
     else:
         if key in d[index][0]:
             return None
@@ -178,7 +178,7 @@ def insertOpenAddressing(d,key,value):
 
 def searchOpenAddressing(d,key):
     index = hashFunctionOpenAddressingDoubleHashing(d,key,len(d))
-    return d[index][0][1]
+    return d[index][1]
 
 
 d = [None] * 4
