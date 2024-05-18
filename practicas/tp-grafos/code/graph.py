@@ -30,12 +30,9 @@ def existPath(g,v1,v2):
     
 def isConnected(g):
     for vertex in g:
-        for vertexIns in g[vertex]:
-            if vertexIns != 0:
-                verifier = True
-                break
-        if verifier is False:
-            return False
+        for vertexIns in g:
+            if existPath(g,vertex,vertexIns) is False:
+                return False
     return True
 
 def isTree(g):
@@ -60,9 +57,47 @@ def isComplete(g):
             return False
     return True
 
-def convertToBfsTree(g,v):
-    a = 0
+#Crea arbol abarcador en base a grafo g
 
 
-g = createGraph(['A','B','C'],[('A', 'B'), ('A', 'C'), ('B', 'C')])
-print(convertToBfsTree(g,'A'))
+#Cuenta la cantidad de componentes conexas en un grafo
+def countConnections(g):
+    if isConnected(g):
+        return 1
+    
+    conj = [next(iter(g.items()))[0]]
+    contador = 1
+    return countConnectionsR(g,conj,contador)
+
+
+def countConnectionsR(g,conj,contador):
+    if g is None:
+        return None
+    for vertex in g:
+        if existPath(g,vertex,conj[0]):
+            conj.append(vertex)
+    for vertex in g:
+        if vertex in conj:
+            None
+        else:
+            contador += 1
+            conj.append(vertex)
+            return countConnectionsR(g,conj,contador)
+    return contador
+
+
+#def convertToBfsTree(g,v):
+
+#def convertToDfsTree(g,v):
+
+#def bestRoad(g,v1,v2):
+
+#def isBipartite(g):
+
+#def PRIM(g):
+
+#def KRUSKAL(g):
+
+g = createGraph(['A','B','C','D','E','F','G','H'],[('A', 'B'), ('A', 'C'), ('B', 'C'), ('B', 'D'), ('C', 'D'), ('D', 'E'), ('D', 'F'), ('E', 'F'), ('G', 'H')])
+print(countConnections(g))
+#print(convertToBfsTree(g,'A'))
