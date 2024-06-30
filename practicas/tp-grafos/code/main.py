@@ -14,6 +14,10 @@ def createGraph(v,e):
 
     return graph
 
+def insertEdge(g,v1,v2):
+    g[v1].append(v2)
+    g[v2].append(v1)
+
 #Determina si existe un camino desde v1 a v2
 
 def existPath(g,v1,v2):
@@ -177,13 +181,133 @@ def convertToDfsTreeR(g,v,colors,dfsTree):
 
 #def isBipartite(g):
 
-#Implementa el algoritmo de PRIM
+def insertWGraph(graph, node1, node2, weight):
+    if node1 not in graph:
+        graph[node1] = {}
+    if node2 not in graph:
+        graph[node2] = {}
+    graph[node1][node2] = weight
+    graph[node2][node1] = weight
+    return graph
 
-#def PRIM(g):
+def createWGraph(matrix):
+    graph = {}
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            if matrix[i][j] != -1:
+                graph = insertWGraph(graph, i, j, matrix[i][j])
+    return graph
+
+#Implementa el algoritmo de PRIM
+##Suponiendo g conexo
+def PRIM(g):
+    if g is None:
+        return None
+    
+    conj1 = {}
+    conj2 = {vertex: [] for vertex in g}
+    edges = []
+
+    startVertex = next(iter(g))
+    conj1[startVertex] = g[startVertex]
+    del conj2[startVertex]
+    
+    while conj2:
+        min_edge = None
+        min_weight = float('inf')
+        
+        for vertex in conj1:
+            for neighbor in g[vertex]:
+                if neighbor in conj2 and g[vertex][neighbor] < min_weight:
+                    min_weight = g[vertex][neighbor]
+                    min_edge = (vertex, neighbor)
+        
+        if min_edge is None:
+            break
+        
+        vertex, minG = min_edge
+        conj1[vertex][minG] = g[vertex][minG]
+        edges.append((vertex, minG))
+        conj1[minG] = g[minG]
+        del conj2[minG]
+    
+    graph = createGraph(conj1, edges)
+    return graph
     
 #Implementa el algoritmo de Kruskal
 
-#def KRUSKAL(g):
+def KRUSKAL(g):
+    if g is None:
+        return None
+    v = [vertex for vertex in g]
+    gr = createGraph(v,[])
+    edges = {}
+    for i in range(len(g)):
+        for j in range(len(g)):
+            if i in g and j in g[i] and i != j:
+                if g[i][j] >= 0:
+                    edges[(i,j)] = g[i][j]
+    sortedKeys = sorted(edges, key=lambda x: edges[x])
+    #while True:
+    for edge in sortedKeys:
+        if not existPath(gr,edge[0],edge[1]):
+            insertEdge(gr,edge[0],edge[1])
+    return gr
+        
 
-g = createGraph(['A', 'B', 'C','D', 'E'], [('A', 'B'), ('A', 'C'), ('B', 'C'), ('E', 'A'),('D','E'),('C','E')])
-print(convertToDfsTree(g,'A'))
+def addEdge(grafo, v1, v2, peso):
+    if v1 in grafo and v2 in grafo:
+        grafo[v1][v2] = peso
+    else:
+        raise ValueError("Uno o ambos vértices no existen")
+
+
+def createDWGraph(v, e):
+    grafo = {}
+    for ver in v:
+        grafo[ver] = {}
+    
+    for edge in e:
+        addEdge(grafo, edge[0], edge[1], edge[2])
+        addEdge(grafo, edge[1], edge[0], edge[2])
+    
+    return grafo
+
+def shortestPath(g,v1,v2):
+    if g is None:
+        return None
+    if not existPath(g,v1,v2):
+        return None
+    labels = {}
+    path = []
+    labels[v1] = 0
+    discovered = [v1]
+    for neighbour in g[v1]:
+        labels[neighbour] = g[v1][neighbour]
+        discovered.append(neighbour)
+        discovered.pop(0)
+        
+    while discovered:
+        for vertex in discovered:
+            for neighbour in g[vertex]:
+                newLabel = labels[vertex] + g[vertex][neighbour]
+                if neighbour in labels:
+                    if newLabel < labels[neighbour]:
+                        labels[neighbour] = newLabel
+                else:
+                    labels[neighbour] = newLabel
+                    discovered.append(neighbour)
+
+            discovered.pop(0)
+    return labels
+            
+
+
+#g = createGraph(['A', 'B', 'C','D', 'E'], [('A', 'B'), ('A', 'C'), ('B', 'C'), ('E', 'A'),('D','E'),('C','E')])
+#g = createWGraph([[40, 50, 20, -1, -1], [50, 10, 30, -1, -1], [20, 30, 10, -1, 40], [-1, -1, -1, 10, 50], [-1, -1, 40, 50, 10]])
+
+#{'A': {'B': 40, 'C': 10, 'E': 80}, 'B': {'A': 40, 'C': 30}, 'C': {'A': 10, 'B': 30, 'E': 20}, 'D': {'E': 10}, 'E': {'A': 80, 'D': 10, 'C': 20}}
+g = createDWGraph(['A', 'B', 'C','D', 'E'], [('A', 'B',40), ('A', 'C',10), ('B', 'C',30), ('E', 'A',80),('D','E',10),('C','E',20)])
+print(shortestPath(g,'D','A'))
+
+
