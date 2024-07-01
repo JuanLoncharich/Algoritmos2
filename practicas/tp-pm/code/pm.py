@@ -100,5 +100,71 @@ def isPatternContained(string, pattern, c):
     return j == len(pattern)
             
 
+##Implementación de KMP(Knuth-Morris-Prath algorithm)
+def KMP(string,pattern):
+    i = 0
+    j = 0
+    table = buildTable(pattern)
+    while i < len(string):
+        if string[i] == pattern[j]:
+            if j == len(pattern) - 1:
+                return i - j
+            j += 1
+            i += 1
+        else:
+            if j != 0:
+                j = table[j-1]
+            else:
+                i += 1
+    return None
+            
+def buildTable(string):
+    table = [0]
+    for i in range(1,len(string)):
+        table.append(prefixThatSufix(string,i,table[i-1]))
+    return table
+
+def prefixThatSufix(string,pos,lastSave):
+    if lastSave == 0:
+        if string[pos] == string[0]:
+            return 1
+        else:
+            return 0
+    if string[pos] == string[lastSave]:
+        return lastSave + 1
+    return 0
+
+##Implementación de Rabin-Karp
+def rabinKarp(string,pattern):
+    d = 256
+    q = 10
+    m = len(pattern)
+    n = len(string)
+    p = 0
+    t = 0
+    h = 1
+    result = []
+
+    for i in range(m-1):
+        h = (h * d) % q
+
+    for i in range(m):
+        p = (d * p + ord(pattern[i])) % q
+        t = (d * t + ord(string[i])) % q
+
+    for i in range(n - m + 1):
+        if p == t:
+            if string[i:i + m] == pattern:
+                result.append(i)
+
+        if i < n - m:
+            t = (d * (t - ord(string[i]) * h) + ord(string[i + m])) % q
+
+            if t < 0:
+                t += q
+
+    return result
     
-    
+
+#[0, 0, 0, 1, 2, 3]
+#print(KMP('aaabaabaaabb','baabaa'))
