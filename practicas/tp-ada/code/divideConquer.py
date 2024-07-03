@@ -1,3 +1,4 @@
+import math
 
 def busquedaBinaria(lista,x):
     if len(lista) == 0:
@@ -91,6 +92,32 @@ def distanciaR(st1, st2):
     
     return min(replace, insert, delete)
 
+    
+def distanciaCuadratica(u, v):
+    if len(u) != len(v):
+        raise ValueError("Los vectores deben tener la misma longitud")
+    suma_cuadratica = sum((u_i - v_i) ** 2 for u_i, v_i in zip(u, v))
+    return math.sqrt(suma_cuadratica)
+
+def closestPoints(lista):
+    menores = []
+    return closestPointsR(lista,lista[0],0,menores)
+
+
+def closestPointsR(lista,x,pos,menores):
+    menor = float('inf')
+    for element in lista:
+        if element != x:
+            candidato = abs(distanciaCuadratica(element,x))
+            if candidato < menor:
+                menores = [(element,x)]
+                menor = candidato
+    if lista[-1] == x:
+        return menor
+    return min(menor,closestPointsR(lista,lista[pos + 1],pos + 1,menores))
+                
+    
+print(closestPoints([(1,1),(2,2),(3,3),(4,4),(5,5)]))
     
 #print(distancia('hola','hqft'))
 #print(busquedaBinaria([2,7,5,6,9,12],7))
